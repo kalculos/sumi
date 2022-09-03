@@ -1,19 +1,13 @@
 plugins {
-    id 'java'
 }
 
 group 'io.ib67.sumi'
 version '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-}
-
-test {
-    useJUnitPlatform()
+subprojects {
+    afterEvaluate {
+        dependencies {
+            compileOnly 'org.jetbrains:annotations:23.0.0'
+        }
+    }
 }

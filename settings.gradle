@@ -1,2 +1,4 @@
 rootProject.name = 'sumi'
+include 'sumi-core'
+include 'sumi-serializer'
 
