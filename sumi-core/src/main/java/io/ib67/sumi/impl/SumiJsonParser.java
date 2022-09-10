@@ -22,18 +22,26 @@
  * SOFTWARE.
  */
 
-package io.ib67.sumi.api;
+package io.ib67.sumi.impl;
 
+import io.ib67.sumi.api.JsonParser;
 import io.ib67.sumi.api.object.JsonValue;
-import io.ib67.sumi.impl.SumiJsonParser;
 
-public interface JsonParser {
+import java.nio.ByteBuffer;
 
-    static JsonParser DEFAULT = new SumiJsonParser();
+public class SumiJsonParser implements JsonParser {
+    @Override
+    public JsonValue parseString(String input) {
+        return new JsonReader(new JsonTokenReader(ByteBuffer.wrap(input.getBytes()))).readValue();
+    }
 
-    JsonValue parseString(String input);
+    @Override
+    public <T> T fromJson(String input, Class<T> typeOfT) {
+        return null;
+    }
 
-    <T> T fromJson(String input, Class<T> typeOfT); //todo: typetoken
-
-    JsonValue toJson(Object object);
+    @Override
+    public JsonValue toJson(Object object) {
+        return null;
+    }
 }

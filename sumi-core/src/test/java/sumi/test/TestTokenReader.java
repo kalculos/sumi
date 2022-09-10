@@ -25,18 +25,20 @@
 package sumi.test;
 
 import io.ib67.sumi.impl.JsonReader;
-import io.ib67.sumi.impl.JsonStreamParser;
+import io.ib67.sumi.impl.JsonTokenReader;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class StreamParser {
+public class TestTokenReader {
     @Test
     public void on() throws IOException {
-        var it = new JsonStreamParser(Files.readString(Path.of("/home/icybear/IdeaProjects/sumi/sumi-core/build/libs/test.json")));
+        var json = Files.readString(Path.of("/home/icybear/IdeaProjects/sumi/benchmark/test.json"));
+        var it = new JsonTokenReader(ByteBuffer.wrap(json.getBytes()));
         var reader = new JsonReader(it);
-        System.out.println(reader.readJson().toJSON());
+        System.out.println(reader.readValue());
     }
 }

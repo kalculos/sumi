@@ -22,15 +22,44 @@
  * SOFTWARE.
  */
 
-package io.ib67.sumi.impl;
+package sumi;
 
-public enum JsonSymbol {
-    OBJECT_BEGIN // {
-    , OBJECT_END // }
-    , ARRAY_BEGIN //[
-    , ARRAY_END // ]
-    , COMMA //,
-    , SEMICOLON // :
-    , COMMENT // //
-    , LITERAL_STRING, LITERAL_INT, END_OF_FILE
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonParser;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.infra.Blackhole;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+@State(Scope.Benchmark)
+public class JsonParseBenchmark {
+    private static final ObjectMapper om = new ObjectMapper();
+    private String text;
+
+    @Setup
+    public void setup() throws IOException {
+        text = Files.readString(Path.of("test.json"));
+
+    }
+
+    @Benchmark
+    public void GsonJsonParse(Blackhole b) {
+        b.consume(JsonParser.parseString(text));
+    }
+
+    @Benchmark
+    public void SumiJsonParse(Blackhole b) {
+        b.consume(io.ib67.sumi.api.JsonParser.DEFAULT.parseString(text));
+    }
+
+    @Benchmark
+    public void JacksonJsonParse(Blackhole b) throws IOException {
+        b.consume(om.readTree(text.getBytes()));
+    }
+
 }

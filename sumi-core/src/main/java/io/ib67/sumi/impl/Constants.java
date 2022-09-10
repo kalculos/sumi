@@ -24,22 +24,16 @@
 
 package io.ib67.sumi.impl;
 
-import io.ib67.sumi.api.JsonParser;
-import io.ib67.sumi.api.object.JsonValue;
+public class Constants {
+    public static final byte WHITESPACE = (byte) ' ';
+    public static final byte OBJECT_BEGIN = (byte) '{'; // {
+    public static final byte OBJECT_END = (byte) '}'; // }
+    public static final byte ARRAY_BEGIN = (byte) '['; // [
+    public static final byte ARRAY_END = ']'; // ]
+    public static final byte COMMA = ','; // ,
+    public static final byte SEMICOLON = 58; // :
 
-public class SumiParser implements JsonParser {
-    @Override
-    public JsonValue parseString(String input) {
-        return null;
-    }
+    public static final byte DOUBLE_QUOTE = 34;
+    public static final byte ESCAPE = 92;
 
-    @Override
-    public <T> T fromJson(String input, Class<T> typeOfT) {
-        return null;
-    }
-
-    @Override
-    public JsonValue toJson(Object object) {
-        return null;
-    }
 }

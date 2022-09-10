@@ -24,8 +24,24 @@
 
 package io.ib67.sumi.impl;
 
+import io.ib67.sumi.api.object.primitive.JsonNull;
+
 public record JsonToken(
-        JsonSymbol type,
+        TokenType typeOfToken,
         Object data
 ) {
+    static JsonToken OBJ_BEGN = new JsonToken(TokenType.OBJECT_BEGIN, null);
+    static JsonToken OBJ_END = new JsonToken(TokenType.OBJECT_END, null);
+    static JsonToken ARR_BEGN = new JsonToken(TokenType.ARRAY_BEGIN, null);
+    static JsonToken ARR_END = new JsonToken(TokenType.ARRAY_END, null);
+    static JsonToken NULL = new JsonToken(TokenType.NULL, JsonNull.NULL);
+    static JsonToken EOF = new JsonToken(TokenType.EOF, null);
+
+    static JsonToken COMMA = new JsonToken(TokenType.COMMA, null);
+    static JsonToken SEMICOLON = new JsonToken(TokenType.SEMICOLON, null);
+
+    static JsonToken TRUE = new JsonToken(TokenType.TRUE, null);
+    static JsonToken FALSE = new JsonToken(TokenType.FALSE, null);
+
+
 }

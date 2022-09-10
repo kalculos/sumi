@@ -24,10 +24,19 @@
 
 package io.ib67.sumi.impl;
 
-public enum JsonTokenType {
-    OBJECT,
-    LITERAL_STRING,
-    LITERAL_NUMBER,
+public enum TokenType {
+    OBJECT_BEGIN,
+    OBJECT_END,
+    ARRAY_BEGIN,
+    ARRAY_END,
+
+    LITERAL_TEXT,
+    LITERAL_INTEGER,
+    LITERAL_DOUBLE,
+    NULL,
     COMMA,
-    SEMICOLON
+    SEMICOLON,
+    TRUE,
+    FALSE,
+    EOF
 }
