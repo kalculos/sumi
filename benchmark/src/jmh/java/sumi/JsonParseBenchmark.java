@@ -46,7 +46,6 @@ public class JsonParseBenchmark {
         text = Files.readString(Path.of("test.json"));
 
     }
-
     @Benchmark
     public void GsonJsonParse(Blackhole b) {
         b.consume(JsonParser.parseString(text));
@@ -57,7 +56,7 @@ public class JsonParseBenchmark {
         b.consume(io.ib67.sumi.api.JsonParser.DEFAULT.parseString(text));
     }
 
-    @Benchmark
+   @Benchmark
     public void JacksonJsonParse(Blackhole b) throws IOException {
         b.consume(om.readTree(text.getBytes()));
     }

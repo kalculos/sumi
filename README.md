@@ -43,4 +43,3 @@ JsonParseBenchmark.SumiJsonParse     thrpt    6  484.782 ± 12.654  ops/s
 - [ ] Compile-time serialization
 - [ ] Runtime bytecode generation
 - [ ] More Json Features
-- [ ] Optimize code to reduce garbage
