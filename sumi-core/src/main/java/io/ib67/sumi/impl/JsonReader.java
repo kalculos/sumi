@@ -52,9 +52,9 @@ public class JsonReader {
         if (!tokenIterator.hasNext()) {
             throw new JsonParseException("Cannot iterate more json tokens for reading an object.");
         }
-        var obj = new JsonObject();
+        final var obj = new JsonObject();
         while (tokenIterator.hasNext()) {
-            var token = tokenIterator.next();
+            final var token = tokenIterator.next();
             switch (token.typeOfToken()) {
                 case LITERAL_TEXT -> {
                     if (!tokenIterator.hasNext()) {
@@ -76,7 +76,7 @@ public class JsonReader {
 
     public JsonValue readValue() {
         if (tokenIterator.hasNext()) {
-            var token = tokenIterator.next();
+            final var token = tokenIterator.next();
             return readValue(token);
         } else {
             throw new JsonParseException("TokenStream is ended");
@@ -101,9 +101,9 @@ public class JsonReader {
         if (!tokenIterator.hasNext()) {
             throw new JsonParseException("Cannot iterate more json tokens for reading an array.");
         }
-        var arr = new JsonArray();
+        final var arr = new JsonArray();
         while (tokenIterator.hasNext()) {
-            var token = tokenIterator.next();
+            final var token = tokenIterator.next();
             switch (token.typeOfToken()) {
                 case ARRAY_END -> {
                     return arr;

@@ -53,7 +53,7 @@ public class JsonTokenReader implements Iterator<JsonToken> {
             return JsonToken.EOF;
         }
         input.mark();
-        var it = input.get();
+        final var it = input.get();
         return switch (it) {
             case Constants.OBJECT_BEGIN -> JsonToken.OBJ_BEGN;
             case Constants.OBJECT_END -> JsonToken.OBJ_END;
@@ -76,7 +76,7 @@ public class JsonTokenReader implements Iterator<JsonToken> {
     }
 
     private JsonToken readNull() {
-        var result = matchToken("ull", false); // 'n' is already polled;
+        final var result = matchToken("ull", false); // 'n' is already polled;
         if (!result) {
             throw new JsonParseException("Cannot match token \"null\"!");
         }
@@ -87,15 +87,15 @@ public class JsonTokenReader implements Iterator<JsonToken> {
         // move back
         input.position(input.position() - 1);
         // read until any end
-        var pos = input.position();
+        final var pos = input.position();
         boolean digit = false;
         while (input.hasRemaining()) {
-            var now = input.get();
+            final var now = input.get();
             switch (now) {
                 case (byte) 'e', (byte) 'E', (byte) '.' -> digit = true;
                 case Constants.COMMA, Constants.OBJECT_END, Constants.ARRAY_END -> {
-                    var end = input.position() - 1;
-                    var dst = new byte[end - pos];
+                    final var end = input.position() - 1;
+                    final var dst = new byte[end - pos];
                     input.position(pos);
                     input.get(dst, 0, end - pos);
                     input.position(end);
@@ -107,7 +107,7 @@ public class JsonTokenReader implements Iterator<JsonToken> {
     }
 
     private JsonToken readTrue() {
-        var result = matchToken("rue", false); // 't' is already polled;
+        final var result = matchToken("rue", false); // 't' is already polled;
         if (!result) {
             throw new JsonParseException("Cannot match token \"true\"!");
         }
@@ -116,7 +116,7 @@ public class JsonTokenReader implements Iterator<JsonToken> {
 
     // boilerplate.
     private JsonToken readFalse() {
-        var result = matchToken("alse", false); // 'f' is already polled;
+        final var result = matchToken("alse", false); // 'f' is already polled;
         if (!result) {
             throw new JsonParseException("Cannot match token \"false\"!");
         }
@@ -124,12 +124,12 @@ public class JsonTokenReader implements Iterator<JsonToken> {
     }
 
     private boolean matchToken(String token, boolean reset) {
-        var bts = token.getBytes();
+        final var bts = token.getBytes();
         if (input.remaining() < bts.length) {
             throw new JsonParseException("Cannot match token \"" + token + "\" because the buffer is going to end");
         }
         input.mark();
-        for (byte n : bts) {
+        for (final byte n : bts) {
             if (input.get() != n) {
                 if (reset) {
                     input.reset();
@@ -144,7 +144,7 @@ public class JsonTokenReader implements Iterator<JsonToken> {
     }
 
     private JsonToken readString() {
-        var pos = input.position();
+        final var pos = input.position();
         boolean usingStringBuf = false;
         while (input.hasRemaining()) {
             var c = input.get();
@@ -152,9 +152,9 @@ public class JsonTokenReader implements Iterator<JsonToken> {
                 if (!usingStringBuf) {
                     stringBuf.reset();
                     // turn to mode 2 !
-                    var current = input.position() - 1;
-                    var len = input.position() - pos;
-                    var buf = new byte[len];
+                    final var current = input.position() - 1;
+                    final var len = input.position() - pos;
+                    final var buf = new byte[len];
                     input.get(buf, 0, len);
                     input.position(current);
                     //baos = new ByteArrayOutputStream(Math.max(32, len + 16));
@@ -173,7 +173,7 @@ public class JsonTokenReader implements Iterator<JsonToken> {
                     if (input.hasArray()) {
                         return new JsonToken(TokenType.LITERAL_TEXT, new String(input.array(), pos, current - pos));
                     } else {
-                        var buf = new byte[current - pos];
+                        final var buf = new byte[current - pos];
                         input.get(buf, 0, current - pos);
                         return new JsonToken(TokenType.LITERAL_TEXT, new String(buf));
                     }
@@ -205,7 +205,7 @@ public class JsonTokenReader implements Iterator<JsonToken> {
     private void nextNonWhitespace() {
         while (input.hasRemaining()) { // 0 , 1 , 2
             // { , } , \n
-            var a = input.get();
+            final var a = input.get();
             if (!isWhitespace(a)) {
                 input.position(input.position() - 1);
                 return;
