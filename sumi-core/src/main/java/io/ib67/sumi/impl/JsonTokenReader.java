@@ -64,6 +64,7 @@ public class JsonTokenReader implements Iterator<JsonToken> {
             case Constants.DOUBLE_QUOTE -> readString();
             case (byte) 't' -> readTrue();
             case (byte) 'f' -> readFalse();
+            case (byte) 'n' -> readNull();
             default -> {
                 // check for number.
                 if ((it >= 48 && it <= 57) || it == (byte) '-') {
@@ -72,6 +73,14 @@ public class JsonTokenReader implements Iterator<JsonToken> {
                 throw new JsonParseException("Unexpected char: \"" + (char) it + "\"");
             }
         };
+    }
+
+    private JsonToken readNull() {
+        var result = matchToken("ull", false); // 'n' is already polled;
+        if (!result) {
+            throw new JsonParseException("Cannot match token \"null\"!");
+        }
+        return JsonToken.NULL;
     }
 
     private JsonToken readNumber() {
