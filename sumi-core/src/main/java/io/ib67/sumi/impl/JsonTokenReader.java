@@ -38,8 +38,11 @@ public class JsonTokenReader implements Iterator<JsonToken> {
     private final ByteBuffer input;
     private final ByteArrayOutputStream stringBuf = new ByteArrayOutputStream(MAX_LENGTH_OF_TEXT_WITH_ESCAPED);
 
+    private final boolean hasArray;
+
     public JsonTokenReader(ByteBuffer input) {
         this.input = input;
+        hasArray = input.hasArray();
     }
 
     private static boolean isWhitespace(byte b) {
@@ -76,11 +79,13 @@ public class JsonTokenReader implements Iterator<JsonToken> {
     }
 
     private JsonToken readNull() {
-        final var result = matchToken("ull", false); // 'n' is already polled;
-        if (!result) {
-            throw new JsonParseException("Cannot match token \"null\"!");
+        if (input.remaining() < 3) {
+            throw new JsonParseException("Cannot match token NULL because the buffer is going to end");
         }
-        return JsonToken.NULL;
+        if (input.get() == (byte) 'u' && input.get() == (byte) 'l' && input.get() == (byte) 'l') {
+            return JsonToken.TRUE;
+        }
+        throw new JsonParseException("Cannot match token \"null\"!");
     }
 
     private JsonToken readNumber() {
@@ -107,40 +112,24 @@ public class JsonTokenReader implements Iterator<JsonToken> {
     }
 
     private JsonToken readTrue() {
-        final var result = matchToken("rue", false); // 't' is already polled;
-        if (!result) {
-            throw new JsonParseException("Cannot match token \"true\"!");
+        if (input.remaining() < 3) {
+            throw new JsonParseException("Cannot match token TRUE because the buffer is going to end");
         }
-        return JsonToken.TRUE;
+        if (input.get() == (byte) 'r' && input.get() == (byte) 'u' && input.get() == (byte) 'e') {
+            return JsonToken.TRUE;
+        }
+        throw new JsonParseException("Cannot match token \"true\"!");
     }
 
     // boilerplate.
     private JsonToken readFalse() {
-        final var result = matchToken("alse", false); // 'f' is already polled;
-        if (!result) {
-            throw new JsonParseException("Cannot match token \"false\"!");
+        if (input.remaining() < 4) {
+            throw new JsonParseException("Cannot match token FALSE because the buffer is going to end");
         }
-        return JsonToken.FALSE;
-    }
-
-    private boolean matchToken(String token, boolean reset) {
-        final var bts = token.getBytes();
-        if (input.remaining() < bts.length) {
-            throw new JsonParseException("Cannot match token \"" + token + "\" because the buffer is going to end");
+        if (input.get() == (byte) 'a' && input.get() == (byte) 'l' && input.get() == (byte) 's' && input.get() == (byte) 'e') {
+            return JsonToken.FALSE;
         }
-        input.mark();
-        for (final byte n : bts) {
-            if (input.get() != n) {
-                if (reset) {
-                    input.reset();
-                }
-                return false;
-            }
-        }
-        if (reset) {
-            input.reset();
-        }
-        return true;
+        throw new JsonParseException("Cannot match token \"false\"!");
     }
 
     private JsonToken readString() {
@@ -170,7 +159,7 @@ public class JsonTokenReader implements Iterator<JsonToken> {
                 // end.
                 if (!usingStringBuf) {
                     var current = input.position() - 1;
-                    if (input.hasArray()) {
+                    if (hasArray) {
                         return new JsonToken(TokenType.LITERAL_TEXT, new String(input.array(), pos, current - pos));
                     } else {
                         final var buf = new byte[current - pos];
