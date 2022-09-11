@@ -33,6 +33,10 @@ public final class JsonString extends JsonPrimitive {
         this.value = value;
     }
 
+    public String getValue() {
+        return value;
+    }
+
     @Override
     public String toJSON() {
         return "\"" + value.replaceAll("\"", "\\\\\"") + "\"";

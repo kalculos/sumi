@@ -27,13 +27,21 @@ package io.ib67.sumi.api;
 import io.ib67.sumi.api.object.JsonValue;
 import io.ib67.sumi.impl.SumiJsonParser;
 
+import java.nio.ByteBuffer;
+
 public interface JsonParser {
 
     static JsonParser DEFAULT = new SumiJsonParser();
 
     JsonValue parseString(String input);
 
+    JsonValue parseBuffer(ByteBuffer buffer);
+
+    JsonValue parseBytes(byte[] bytes);
+
     <T> T fromJson(String input, Class<T> typeOfT); //todo: typetoken
+
+    <T> T fromJsonTree(JsonValue tree, Class<T> typeOfT); //todo: typetoken
 
     JsonValue toJson(Object object);
 }

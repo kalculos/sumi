@@ -79,6 +79,14 @@ public sealed abstract class JsonPrimitive implements JsonValue permits JsonNumb
         return this == JsonNull.NULL;
     }
 
+    public boolean isString() {
+        return this instanceof JsonString;
+    }
+
+    public String getAsString() {
+        return ((JsonString) this).getValue();
+    }
+
     @Override
     public String toString() {
         return this.toJSON();

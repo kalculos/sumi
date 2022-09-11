@@ -32,11 +32,26 @@ import java.nio.ByteBuffer;
 public class SumiJsonParser implements JsonParser {
     @Override
     public JsonValue parseString(String input) {
-        return new JsonReader(new JsonTokenReader(ByteBuffer.wrap(input.getBytes()))).readValue();
+        return parseBytes(input.getBytes());
+    }
+
+    @Override
+    public JsonValue parseBuffer(ByteBuffer buffer) {
+        return new JsonReader(new JsonTokenReader(buffer)).readValue();
+    }
+
+    @Override
+    public JsonValue parseBytes(byte[] bytes) {
+        return parseBuffer(ByteBuffer.wrap(bytes));
     }
 
     @Override
     public <T> T fromJson(String input, Class<T> typeOfT) {
+        return null;
+    }
+
+    @Override
+    public <T> T fromJsonTree(JsonValue tree, Class<T> typeOfT) {
         return null;
     }
 
