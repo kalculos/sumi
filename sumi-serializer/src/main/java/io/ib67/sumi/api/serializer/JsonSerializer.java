@@ -28,8 +28,9 @@ import io.ib67.sumi.api.JsonParser;
 import io.ib67.sumi.api.exception.JsonParseException;
 import io.ib67.sumi.api.object.JsonValue;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
 @ApiStatus.AvailableSince("0.1.0")
 public interface JsonSerializer<T> {
-    T serialize(JsonValue value, JsonParser parser) throws JsonParseException;
+    JsonValue serialize(@Nullable T t, JsonParser parser) throws JsonParseException;
 }

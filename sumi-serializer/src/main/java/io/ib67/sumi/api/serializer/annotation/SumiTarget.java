@@ -28,9 +28,9 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.annotation.*;
 
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME) // for identification
 @Documented
 @Target(ElementType.TYPE)
 @ApiStatus.AvailableSince("0.1.0")
-public @interface SumiSerializable {
+public @interface SumiTarget {
 }
