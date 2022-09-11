@@ -1,6 +1,6 @@
 # Sumi
 
-Sumi is a compile-time json (de)serializer, aiming to provide a higher performance while keeping its size low.
+Sumi is a compile-time json (de)serializer, a trade-off between high performance and library size.
 
 It is lightweight, you can feel free to embed it into your application without worrying it is bigger than your all
 business codes.
@@ -17,7 +17,7 @@ Status: Under Development, PoC.
 # Performance
 
 ![img](./assets/img.png)
-[Json for benchmark](./benchmark/test.json)
+[Json for benchmark (~1w line)](./benchmark/test.json)
 ```
 CPU: AMD Ryzen 7 4800U with Radeon Graphics (16) @ 1.800GHz
 Memory: 15357MiB in total
@@ -29,12 +29,6 @@ Memory: 15357MiB in total
 # Warmup: 4 iterations, 10 s each
 # Measurement: 3 iterations, 10 s each
 # Timeout: 10 min per iteration
-
-
-Benchmark                             Mode  Cnt    Score    Error  Units
-JsonParseBenchmark.GsonJsonParse     thrpt    6  354.937 ± 27.911  ops/s
-JsonParseBenchmark.JacksonJsonParse  thrpt    6  992.664 ± 73.845  ops/s
-JsonParseBenchmark.SumiJsonParse     thrpt    6  484.782 ± 12.654  ops/s
 ```
 
 # To-do

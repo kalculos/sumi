@@ -25,14 +25,15 @@
 package sumi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonParser;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.infra.Blackhole;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -40,25 +41,28 @@ import java.nio.file.Path;
 public class JsonParseBenchmark {
     private static final ObjectMapper om = new ObjectMapper();
     private String text;
+    private byte[] bytes;
 
     @Setup
     public void setup() throws IOException {
         text = Files.readString(Path.of("test.json"));
-
+        bytes = text.getBytes();
     }
+
     @Benchmark
     public void GsonJsonParse(Blackhole b) {
-        b.consume(JsonParser.parseString(text));
+        b.consume(com.google.gson.JsonParser.parseReader(new InputStreamReader(new ByteArrayInputStream(bytes))));
+        //b.consume(com.google.gson.JsonParser.parseString(text));
     }
 
     @Benchmark
     public void SumiJsonParse(Blackhole b) {
-        b.consume(io.ib67.sumi.api.JsonParser.DEFAULT.parseString(text));
+        b.consume(io.ib67.sumi.api.JsonParser.DEFAULT.parseBytes(bytes));
+        //b.consume(io.ib67.sumi.api.JsonParser.DEFAULT.parseString(text));
     }
 
-   @Benchmark
+    // @Benchmark
     public void JacksonJsonParse(Blackhole b) throws IOException {
-        b.consume(om.readTree(text.getBytes()));
+        b.consume(om.readTree(bytes));
     }
-
 }

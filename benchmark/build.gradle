@@ -8,6 +8,7 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 jmh {
     warmupIterations = 4
@@ -24,6 +25,7 @@ dependencies {
     jmhImplementation project(":sumi-core")
     jmhImplementation 'com.fasterxml.jackson.core:jackson-core:2.13.4'
     jmhImplementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+    jmhImplementation 'com.github.czm23333:whatsjson:26a9f4afa4'
 }
 
 test {
