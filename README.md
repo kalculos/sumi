@@ -1,6 +1,6 @@
 # Sumi
 
-Sumi is a compile-time json (de)serializer, a trade-off between high performance and library size.
+Sumi is a compile-time json (de)serializer.
 
 It is lightweight, you can feel free to embed it into your application without worrying it is bigger than your all
 business codes.
